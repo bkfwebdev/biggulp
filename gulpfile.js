@@ -3,18 +3,15 @@
 var myGulp = require("gulp");
 var gulpConcat = require("gulp-concat");
 var gulpMinify = require("gulp-uglify");
+var soSassy = require("gulp-sass");
+var mapThat = require("gulp-sourcemaps");
+
 
 //------------------ define task -------------------------------
 
 // The gulp scripts command concatenates, minifies, and copies all of the project’s JavaScript files into an all.min.js file
 // The command copies the all.min.js file into the dist/scripts folder
-/*myGulp.task("scripts",function(){
-myGulp.src(["js/global.js","js/circle/autogrow.js","js/circle/circle.js"])
-.pipe(gulpConcat("all.mim.js"))
-.pipe(gulpMinify())
-.pipe(myGulp.dest("dist/all.min.js"))
-})
-*/
+
 myGulp.task("scripts", function() {
     return myGulp.src(["js/global.js","js/circle/autogrow.js","js/circle/circle.js"])
         .pipe(gulpConcat("all.min.js"))
@@ -24,7 +21,14 @@ myGulp.task("scripts", function() {
 
 // The gulp styles command compiles the project’s SCSS files into CSS, and concatenates and minifies into an all.min.css file
 // The command copies the all.min.css file into the dist/styles folder
-myGulp.task("styles",function(){});
+
+myGulp.task("styles",function(){
+    return myGulp.src(["sass/*.sass"]).
+    pipe(soSassy()).
+    pipe(gulpConcat()).
+    pipe(gulpMinify("all.min.css")).
+    pipe(myGulp.dest("dist/"));
+});
 
 // source maps
 // The gulp scripts command generates JavaScript source maps
