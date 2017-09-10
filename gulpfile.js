@@ -6,9 +6,11 @@ var gulpMinify = require("gulp-uglify");
 var soSassy = require("gulp-sass");
 var mapThat = require("gulp-sourcemaps");
 var cssCrunch = require("gulp-clean-css");
-var concatCss = require('gulp-concat-css'); 
-var imageCrunch = require('gulp-imagemin');
-var cleanUpNice = require('gulp-clean');
+var concatCss = require("gulp-concat-css"); 
+var imageCrunch = require("gulp-imagemin");
+var cleanUpNice = require("gulp-clean");
+var serveItUp = require("gulp-webserver");
+var sauronEye = require("gulp-watch");
 
 
 //------------------ define task -------------------------------
@@ -42,13 +44,13 @@ myGulp.task("styles",function(){
 });
 
 // The gulp images command copies the optimized images to the dist/content folder.
-/*
+
 myGulp.task("images", function(){
     return myGulp.src(["images/*.jpg","images/*.png"])
         .pipe(imageCrunch())
         .pipe(myGulp.dest("dist/content"))
 });
-*/
+ 
 
 // The gulp clean command deletes all of the files and folders in the dist folder.
 myGulp.task("clean", function () {
@@ -56,10 +58,29 @@ myGulp.task("clean", function () {
         .pipe(cleanUpNice());
 });
 
+myGulp.task('webserver', function() {
+    myGulp.src("./")
+      .pipe(serveItUp({
+        livereload: true,
+        directoryListing: false,
+        fallback:"index.html",
+        open: true
+      }));
+  });
+
+myGulp.task("build",["scripts","styles","images","serveItUp","sassWatch"]);
+
+myGulp.task("sassWatch",function(){
+    myGulp.watch("sass/*.scss",["build"])
+})
+
+
+
 
 //---------------- set up default task ------------------------
 // The gulp command properly runs the build task as a dependency
 // The gulp command serves the project using a local webserver.
 // The gulp command also listens for changes to any .scss file. When there is a change to any .scss file, the gulp styles command is run, 
 // the files are compiled, concatenated and minified to the dist folder, and the browser reloads, displaying the changes
-// myGulp.task("default",["build","serveItUp","sassWatch"]);
+
+myGulp.task("default",["build"]);
