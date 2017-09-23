@@ -10,7 +10,7 @@ var concatCss = require("gulp-concat-css");
 var imageCrunch = require("gulp-imagemin");
 var cleanUpNice = require("gulp-clean");
 var serveItUp = require("gulp-webserver");
-var sauronEye = require("gulp-watch");
+
 
 
 //------------------ define task -------------------------------
@@ -58,7 +58,7 @@ myGulp.task("clean", function () {
         .pipe(cleanUpNice());
 });
 
-myGulp.task('webserver', function() {
+myGulp.task('webServer', function() {
     myGulp.src("./")
       .pipe(serveItUp({
         livereload: true,
@@ -68,11 +68,14 @@ myGulp.task('webserver', function() {
       }));
   });
 
-myGulp.task("build",["scripts","styles","images","serveItUp","sassWatch"]);
+myGulp.task("build",["clean","scripts","styles","images","webServer","sassWatch"]);
 
 myGulp.task("sassWatch",function(){
     myGulp.watch("sass/*.scss",["build"])
 })
+
+myGulp.task("default",["build"]);
+
 
 
 
