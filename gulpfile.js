@@ -11,8 +11,6 @@ var imageCrunch = require("gulp-imagemin");
 var cleanUpNice = require("gulp-clean");
 var serveItUp = require("gulp-webserver");
 
-
-
 //------------------ define task -------------------------------
 
 // The gulp scripts command concatenates, minifies, and copies all of the project’s JavaScript files into an all.min.js file
@@ -75,19 +73,9 @@ myGulp.task("sassWatch",function(){
 });
 
 myGulp.task("build",["clean","scripts","styles","images","webServer","sassWatch"]);
-
-
-
 myGulp.task("default",["build"]);
-
-
-
-
-
 //---------------- set up default task ------------------------
 // The gulp command properly runs the build task as a dependency
 // The gulp command serves the project using a local webserver.
 // The gulp command also listens for changes to any .scss file. When there is a change to any .scss file, the gulp styles command is run, 
 // the files are compiled, concatenated and minified to the dist folder, and the browser reloads, displaying the changes
-
-myGulp.task("default",["build"]);
