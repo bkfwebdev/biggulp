@@ -34,7 +34,7 @@ myGulp.task("scripts", function(){
 // The gulp styles command generates CSS source maps
 
 myGulp.task("styles",function(){
-    return myGulp.src(["sass/*.scss"])
+    return myGulp.src(["sass/global.scss"])
         .pipe(mapThat.init())
         .pipe(soSassy())
         .pipe(concatCss("all.min.css"))   
@@ -42,6 +42,7 @@ myGulp.task("styles",function(){
         .pipe(mapThat.write("./"))
         .pipe(myGulp.dest("dist/styles")); 
 });
+
 
 // The gulp images command copies the optimized images to the dist/content folder.
 
@@ -55,11 +56,11 @@ myGulp.task("images", function(){
 // The gulp clean command deletes all of the files and folders in the dist folder.
 myGulp.task("clean", function () {
     return myGulp.src("./dist", {read: false})
-        .pipe(cleanUpNice());
+        .pipe(cleanUpNice()); 
 });
 
 myGulp.task('webServer', function() {
-    myGulp.src("./")
+    return myGulp.src("./")
       .pipe(serveItUp({
         livereload: true,
         directoryListing: false,
@@ -68,11 +69,14 @@ myGulp.task('webServer', function() {
       }));
   });
 
-myGulp.task("build",["clean","scripts","styles","images","webServer","sassWatch"]);
 
 myGulp.task("sassWatch",function(){
-    myGulp.watch("sass/*.scss",["build"])
-})
+    return myGulp.watch("sass/*.scss",["build"])
+});
+
+myGulp.task("build",["clean","scripts","styles","images","webServer","sassWatch"]);
+
+
 
 myGulp.task("default",["build"]);
 
