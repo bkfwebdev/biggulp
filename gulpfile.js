@@ -33,6 +33,14 @@ myGulp.task("styles0", function () {
         .pipe(myGulp.dest("dist/styles"));
    });
 
+   myGulp.task("styles1", function () {
+    return myGulp.src("dist/styles/all.min.css")
+     .pipe(mapThat.init())
+     .pipe(mapThat.write("./"))
+     .pipe(myGulp.dest("dist/styles"));
+   });
+
+myGulp.task("styles",["styles0","styles1"]);
 
 
 
