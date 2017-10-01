@@ -25,21 +25,39 @@ myGulp.task("scripts", function(){
         .pipe(myGulp.dest("dist/scripts"));
 });
 
+myGulp.task("styles0", function () {
+    return myGulp.src("sass/global.scss")
+        .pipe(soSassy().on("error", soSassy.logError))
+        .pipe(concatCss("all.min.css"))
+        .pipe(cssCrunch())
+        .pipe(myGulp.dest("dist/styles"));
+   });
+
+
+
+
 // The gulp styles command compiles the project’s SCSS files into CSS, and concatenates and minifies into an all.min.css file
 // The command copies the all.min.css file into the dist/styles folder
 // >source maps<
 // The gulp scripts command generates JavaScript source maps
 // The gulp styles command generates CSS source maps
 
-myGulp.task("styles",function(){
+/* myGulp.task("styles1",function(){
     return myGulp.src(["sass/global.scss"])
-        .pipe(mapThat.init())
         .pipe(soSassy())
         .pipe(concatCss("all.min.css"))   
         .pipe(cssCrunch())
-        .pipe(mapThat.write("./"))
         .pipe(myGulp.dest("dist/styles")); 
 });
+
+myGulp.task("styles2",function(){
+    return myGulp.src(["dist/styles/all.min.css"])
+    .pipe(mapThat.init())
+    .pipe(mapThat.write("dist/styles"))
+})
+
+myGulp.task("styles",["styles1","styles2"]);
+*/
 
 
 // The gulp images command copies the optimized images to the dist/content folder.
